@@ -1,4 +1,4 @@
-import {
+aimport {
   ACTION, EDIT,
   FAILURE,
   LOGIN,
@@ -13,7 +13,6 @@ import {
 const authInitialState = {
   username: '',
   password: '',
-  token: null,
   loading: false,
   error: null,
 }
@@ -27,14 +26,17 @@ const auth = (state = authInitialState, action) => {
 
     case LOGIN + ACTION + SUCCESS:
       const {token} = action
-      return {...state, loading: false, token,  password: ''  }
+      localStorage.setItem('token', token);
+      return {...state, loading: false, password: ''  }
 
     case LOGIN + ACTION + FAILURE:
       const {error} = action
       return {...state, loading: false, password: '', error }
 
     case LOGOUT + ACTION:
-      return {...state, login: "", token: null }
+
+      localStorage.removeItem('token');
+      return {...state, login: ""}
 
     case USERNAME + SET:
       const userError = state.error?.username;
